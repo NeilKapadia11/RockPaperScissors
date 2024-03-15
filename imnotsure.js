@@ -1,1 +1,0 @@
-/home/neil/projects/rockpaperscissors/imnotsure.js
