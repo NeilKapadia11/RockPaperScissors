@@ -40,46 +40,140 @@ function updateScore(result, scores)
 
 function outputMessage(result, computerSelection, playerSelection, scores)
 {
+    const outputTie = document.createElement("p");
+    const outputLoss = document.createElement("p");
+    const outputWin = document.createElement("p");
     if (result === 0)
     {
-        console.log("You tie! You both chose " + computerSelection.toUpperCase());
-        console.log("The score is: " + scores[0] + " to " + scores[1]);
+        outputTie.textContent = "You tie! You both chose " + computerSelection.toUpperCase();
+        container.appendChild(outputTie);
     }
     else if (result === 1)
     {
-        console.log("You LOSE! " + computerSelection.toUpperCase() + " beats " + playerSelection.toUpperCase());
-        console.log("The score is: " + scores[0] + " to " + scores[1]);
+        outputLoss.textContent = "You LOSE! " + computerSelection.toUpperCase() + " beats " + playerSelection.toUpperCase();   
+        container.appendChild(outputLoss);    
     }
     else if (result === 2)
     {
-        console.log("You WIN! " + playerSelection.toUpperCase() + " beats " + computerSelection.toUpperCase());
-        console.log("The score is: " + scores[0] + " to " + scores[1]);
+        outputWin.textContent = "You WIN! " + playerSelection.toUpperCase() + " beats " + computerSelection.toUpperCase();
+        container.appendChild(outputWin);
     }
+}
+
+function runningScore(scores)
+{
+    const scoreVar = document.createElement("p");
+    scoreVar.textContent = "The score is: " + scores[0] + " to " + scores[1];
+    container.appendChild(scoreVar);
 }
 
 function playGame()
 {
     let scores = [0, 0];
-    for (let x = 0; x < 5; x++)
+
+    let playerSelection;
+    let computerSelection;
+
+    let result;
+
+    // New button logic
+
+    const container = document.querySelector("#container");
+
+    const welcome = document.createElement("h1");
+    welcome.classList.add("welcome");
+    welcome.textContent = "Welcome to Rock Paper Scissors!";
+    container.appendChild(welcome);
+
+    const optionText = document.createElement("h2");
+    optionText.classList.add("choiceText");
+    optionText.textContent = "Choose your option";
+    container.appendChild(optionText);
+
+
+    const rockBtn = document.createElement("button");
+    rockBtn.classList.add("choiceBtn");
+    rockBtn.textContent = "rock";
+    rockBtn.addEventListener("click", function() 
     {
-        let playerSelection = prompt("ROCK, PAPER, SCISSORS?");
-        let computerSelection = getComputerChoice();
-        let result = playRound(playerSelection, computerSelection);
-        console.log("Your choice: " + playerSelection + " | " + "The Computer's Choice: " + computerSelection);
+        computerSelection = getComputerChoice();
+        playerSelection = "ROCK";       
+        result = playRound(playerSelection, computerSelection);
         updateScore(result, scores);
         outputMessage(result, computerSelection, playerSelection, scores);
-    }
-    if (scores[0] == scores[1])
+        runningScore(scores);
+
+        if ((scores[0] === 5) || (scores[1] === 5)) 
+        {
+            announceWinner(scores);
+        }
+    });
+
+    const paperBtn = document.createElement("button");
+    paperBtn.classList.add("choiceBtn");
+    paperBtn.textContent = "paper";
+    paperBtn.addEventListener("click", function() 
     {
-        console.log("You tied, the final score is: " + scores[0] + " to " + scores[1]);
-    }
-    else if (scores[0] < scores[1])
+        computerSelection = getComputerChoice();
+        playerSelection = "PAPER";
+        result = playRound(playerSelection, computerSelection);
+        updateScore(result, scores);
+        outputMessage(result, computerSelection, playerSelection, scores);
+        runningScore(scores);
+
+        if ((scores[0] === 5) || (scores[1] === 5)) 
+        {
+            announceWinner(scores);
+        }
+    });
+
+    const scissorsBtn = document.createElement("button");
+    scissorsBtn.classList.add("choiceBtn");
+    scissorsBtn.textContent = "scissors";
+    scissorsBtn.addEventListener("click", function()
     {
-        console.log("You lost, the final score is: " + scores[0] + " to " + scores[1]);
-    }
-    else if (scores[0] > scores[1])
+        computerSelection = getComputerChoice();
+        playerSelection = "SCISSORS";
+        result = playRound(playerSelection, computerSelection);
+        updateScore(result, scores);
+        outputMessage(result, computerSelection, playerSelection, scores);
+        runningScore(scores);
+
+        if ((scores[0] === 5) || (scores[1] === 5)) 
+        {
+            announceWinner(scores);
+        }
+    });
+    container.appendChild(rockBtn);
+    container.appendChild(paperBtn);
+    container.appendChild(scissorsBtn);
+
+    if ((scores[0] === 5) || (scores[1] === 5)) 
     {
-        console.log("You won! The final score is: " + scores[0] + " to " + scores[1]);
+        announceWinner(scores);
+    }
+
+}
+
+function announceWinner(scores) 
+{
+    const tiedScore = document.createElement("p");
+    const lostScore = document.createElement("p");
+    const wonScore = document.createElement("p");
+    if (scores[0] == scores[1]) 
+    {
+        tiedScore.textContent = "You tied, the final score is: " + scores[0] + " to " + scores[1];
+        container.appendChild(tiedScore);
+    } 
+    else if (scores[0] < scores[1]) 
+    {
+        lostScore.textContent = "You lost, the final score is: " + scores[0] + " to " + scores[1];
+        container.appendChild(lostScore);
+    } 
+    else if (scores[0] > scores[1]) 
+    {
+        wonScore.textContent = "You won! The final score is: " + scores[0] + " to " + scores[1];
+        container.appendChild(wonScore);
     }
 }
 
